@@ -1,0 +1,25 @@
+AlignEscapedNewlines: Left
+AllowAllArgumentsOnNextLine: true
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+AlwaysBreakTemplateDeclarations: Yes
+BinPackArguments: true
+BinPackParameters: true
+BreakBeforeBraces: Attach
+ColumnLimit: 100
+DerivePointerAlignment: false
+IncludeCategories:
+  - Regex: '<'
+    Priority: 1
+  - Regex: '"'
+    Priority: 2
+IndentWidth: 4
+#InsertBraces: true
+Language: Cpp
+NamespaceIndentation: None
+PackConstructorInitializers: BinPack
+PointerAlignment: Right
+ReferenceAlignment: Right
+ReflowComments: true
+Standard: c++20

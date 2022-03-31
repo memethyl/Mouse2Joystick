@@ -1,0 +1,16 @@
+[submodule "submodules/SDL"]
+	path = submodules/SDL
+	url = https://github.com/libsdl-org/SDL
+[submodule "submodules/cereal"]
+	path = submodules/cereal
+	url = https://github.com/USCiLab/cereal
+[submodule "submodules/ViGEmClient"]
+	path = submodules/ViGEmClient
+	url = https://github.com/ViGEm/ViGEmClient
+[submodule "submodules/glad"]
+	path = submodules/glad
+	url = https://github.com/Dav1dde/glad
+	branch = master
+[submodule "submodules/Nuklear"]
+	path = submodules/Nuklear
+	url = https://github.com/Immediate-Mode-UI/Nuklear
