@@ -167,10 +167,24 @@ M2JWIN32DLL_API LRESULT CALLBACK GetMsgProc(int nCode, WPARAM wParam, LPARAM lPa
     case WM_LBUTTONDOWN:
     case WM_MBUTTONDOWN:
     case WM_RBUTTONDOWN:
-    case WM_XBUTTONDOWN:
-    case WM_KEYDOWN: {
+    case WM_XBUTTONDOWN: {
         if (mouseCtrl.disableClicks) {
             param->message = WM_NULL;
+        }
+        break;
+    }
+    case WM_KEYDOWN: {
+        if (mouseCtrl.disableClicks) {
+            switch (param->wParam) {
+            case VK_LBUTTON:
+            case VK_MBUTTON:
+            case VK_RBUTTON:
+            case VK_XBUTTON1:
+            case VK_XBUTTON2: {
+                param->message = WM_NULL;
+                break;
+            }
+            }
         }
         break;
     }
