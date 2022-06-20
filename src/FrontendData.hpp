@@ -15,7 +15,6 @@ struct Stick {
     enum : int { None = 0, Left, Right, Both, MAX };
 };
 
-// same as SDLControllerButton but it starts at 0
 struct Button {
   private:
     int value;
@@ -36,6 +35,8 @@ struct Button {
         RIGHTSTICK,
         LEFTSHOULDER,
         RIGHTSHOULDER,
+        LEFTTRIGGER,
+        RIGHTTRIGGER,
         DPAD_UP,
         DPAD_DOWN,
         DPAD_LEFT,

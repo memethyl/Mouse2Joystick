@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <sstream>
 #include <stdexcept>
+#include <utility>
 
 // https://stackoverflow.com/a/4609795
 template <typename T>
@@ -108,11 +109,23 @@ void Frontend::Reset() {
         state.Gamepad.sThumbLY = leftY;
         state.Gamepad.sThumbRX = rightX;
         state.Gamepad.sThumbRY = rightY;
-        state.Gamepad.wButtons = ((backend.mouse_l ? button_map[mouse.left] : 0) |
-                                  (backend.mouse_m ? button_map[mouse.middle] : 0) |
-                                  (backend.mouse_r ? button_map[mouse.right] : 0) |
-                                  (backend.mouse_4 ? button_map[mouse.four] : 0) |
-                                  (backend.mouse_5 ? button_map[mouse.five] : 0));
+        state.Gamepad.bLeftTrigger = 0;
+        state.Gamepad.bRightTrigger = 0;
+        state.Gamepad.wButtons = 0;
+        for (const auto &[active, button] : {std::pair{backend.mouse_l, mouse.left},
+                                             {backend.mouse_m, mouse.middle},
+                                             {backend.mouse_r, mouse.right},
+                                             {backend.mouse_4, mouse.four},
+                                             {backend.mouse_5, mouse.five}}) {
+            // |= is intentional, it allows two mouse buttons to be bound to the same trigger
+            if (button == Button::LEFTTRIGGER) {
+                state.Gamepad.bLeftTrigger |= (active ? 255 : 0);
+            } else if (button == Button::RIGHTTRIGGER) {
+                state.Gamepad.bRightTrigger |= (active ? 255 : 0);
+            } else {
+                state.Gamepad.wButtons |= (active ? button_map[button] : 0);
+            }
+        }
         vigem_target_x360_update(client, pad, *reinterpret_cast<XUSB_REPORT *>(&state.Gamepad));
         backend.deltasum.x = 0;
         backend.deltasum.y = 0;
@@ -120,8 +133,9 @@ void Frontend::Reset() {
 }
 
 const char *Frontend::button_names[Button::MAX] = {
-    "None", "A",    "B",      "X",      "Y",       "Back", "N/A", "Start", "L3",  "R3",  "L1",
-    "R1",   "D-Up", "D-Down", "D-Left", "D-Right", "N/A",  "N/A", "N/A",   "N/A", "N/A", "N/A"};
+    "None",   "A",       "B",   "X",   "Y",   "Back", "N/A",  "Start",
+    "L3",     "R3",      "L1",  "R1",  "L2",  "R2",   "D-Up", "D-Down",
+    "D-Left", "D-Right", "N/A", "N/A", "N/A", "N/A",  "N/A",  "N/A"};
 
 } // namespace win32
 

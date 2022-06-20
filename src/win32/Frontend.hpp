@@ -36,6 +36,8 @@ struct Frontend : public FrontendData {
                                                     XINPUT_GAMEPAD_RIGHT_THUMB,
                                                     XINPUT_GAMEPAD_LEFT_SHOULDER,
                                                     XINPUT_GAMEPAD_RIGHT_SHOULDER,
+                                                    0,
+                                                    0,
                                                     XINPUT_GAMEPAD_DPAD_UP,
                                                     XINPUT_GAMEPAD_DPAD_DOWN,
                                                     XINPUT_GAMEPAD_DPAD_LEFT,
