@@ -134,7 +134,7 @@ void Frontend::Reset() {
 
 const char *Frontend::button_names[Button::MAX] = {
     "None",   "A",       "B",   "X",   "Y",   "Back", "N/A",  "Start",
-    "L3",     "R3",      "L1",  "R1",  "L2",  "R2",   "D-Up", "D-Down",
+    "L1",     "R1",      "L2",  "R2",  "L3",  "R3",   "D-Up", "D-Down",
     "D-Left", "D-Right", "N/A", "N/A", "N/A", "N/A",  "N/A",  "N/A"};
 
 } // namespace win32
