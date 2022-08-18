@@ -5,6 +5,11 @@ namespace m2j {
 
 namespace win32 {
 
+#pragma data_seg(".shared")
+__declspec(allocate(".shared")) static MouseCtrl mouseCtrl = MouseCtrl{};
+#pragma data_seg()
+#pragma comment(linker, "/section:.shared,rws")
+
 static inline std::string GetProcessNameFromHandle(HWND hWnd) {
     DWORD lpdwProcessId;
     GetWindowThreadProcessId(hWnd, &lpdwProcessId);
@@ -32,7 +37,7 @@ LRESULT CALLBACK Backend::MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
     if ((nCode < 0)) {
         return CallNextHookEx(NULL, nCode, wParam, lParam);
     }
-    MOUSEHOOKSTRUCT param = *(MOUSEHOOKSTRUCT *)lParam;
+    MSLLHOOKSTRUCT* param = (MSLLHOOKSTRUCT *)lParam;
     // mouse buttons
     switch (wParam & 0xFFFF) {
     case WM_MOUSEMOVE: {
@@ -75,12 +80,12 @@ LRESULT CALLBACK Backend::MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
     }
     }
     // mouse movement
-    delta.x = param.pt.x - prev.x;
+    delta.x = param->pt.x - prev.x;
     deltasum.x += delta.x;
-    prev.x = param.pt.x;
-    delta.y = param.pt.y - prev.y;
+    prev.x = param->pt.x;
+    delta.y = param->pt.y - prev.y;
     deltasum.y += delta.y;
-    prev.y = param.pt.y;
+    prev.y = param->pt.y;
     if (this->Locked()) {
         int x = window_rect.left + ((window_rect.right - window_rect.left) / 2);
         int y = window_rect.top + ((window_rect.bottom - window_rect.top) / 2);

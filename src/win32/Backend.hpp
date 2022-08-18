@@ -22,10 +22,6 @@ struct MouseCtrl {
     bool hideCursor = false;
     bool disableClicks = false;
 };
-#pragma comment(linker, "/section:.shared,rws")
-#pragma data_seg(".shared")
-static MouseCtrl mouseCtrl;
-#pragma data_seg()
 
 struct M2JWIN32DLL_API Backend : public BackendData {
   private:
