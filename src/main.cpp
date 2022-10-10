@@ -42,6 +42,7 @@ struct UIData {
     int lock_y_axis = 0;
     int hide_cursor = 0;
     int lock_cursor = 0;
+    int lock_in_center = 0;
     char process_name[PROCESS_NAME_MAX_SIZE] = "Cemu.exe";
 
     template <class Archive>
@@ -51,7 +52,7 @@ struct UIData {
         archive(CEREAL_NVP(mouse), CEREAL_NVP(joystick), CEREAL_NVP(input_delay),
                 CEREAL_NVP(x_resist), CEREAL_NVP(y_resist), CEREAL_NVP(disable_clicks),
                 CEREAL_NVP(lock_x_axis), CEREAL_NVP(lock_y_axis), CEREAL_NVP(hide_cursor),
-                CEREAL_NVP(lock_cursor),
+                CEREAL_NVP(lock_cursor), CEREAL_NVP(lock_in_center),
                 cereal::make_nvp("process_name", std::string{process_name}));
     }
 
@@ -61,7 +62,8 @@ struct UIData {
         archive(CEREAL_NVP(mouse), CEREAL_NVP(joystick), CEREAL_NVP(input_delay),
                 CEREAL_NVP(x_resist), CEREAL_NVP(y_resist), CEREAL_NVP(disable_clicks),
                 CEREAL_NVP(lock_x_axis), CEREAL_NVP(lock_y_axis), CEREAL_NVP(hide_cursor),
-                CEREAL_NVP(lock_cursor), cereal::make_nvp("process_name", proc_name));
+                CEREAL_NVP(lock_cursor), CEREAL_NVP(lock_in_center),
+                cereal::make_nvp("process_name", proc_name));
         std::memcpy(process_name, proc_name.data(), min(proc_name.size(), PROCESS_NAME_MAX_SIZE));
     }
 };
@@ -206,7 +208,7 @@ int main(int argc, char *argv[]) {
                 nk_edit_string_zero_terminated(ctx, NK_EDIT_BOX, data.process_name,
                                                data.PROCESS_NAME_MAX_SIZE, nk_filter_ascii);
                 frontend.process_name(data.process_name);
-                nk_layout_row_dynamic(ctx, 20, 1);
+                nk_layout_row_dynamic(ctx, 15, 1);
                 TooltipHover(ctx, data.tooltip,
                              "Disable mouse clicks on the target window. This "
                              "will block all interaction with the window.");
@@ -226,10 +228,14 @@ int main(int argc, char *argv[]) {
                 nk_checkbox_label(ctx, "Hide Cursor", &data.hide_cursor);
                 frontend.hide_cursor(data.hide_cursor > 0);
                 TooltipHover(ctx, data.tooltip,
-                             "Lock the cursor in the middle of the target "
-                             "window when it's focused.");
+                             "Lock the cursor when the target window is focused.");
                 nk_checkbox_label(ctx, "Lock Cursor", &data.lock_cursor);
                 frontend.lock_cursor(data.lock_cursor > 0);
+                TooltipHover(ctx, data.tooltip,
+                             "If \"Lock Cursor\" is on, lock it in the center of the target "
+                             "window. Does not work on some Windows installations.");
+                nk_checkbox_label(ctx, "Lock In Center", &data.lock_in_center);
+                frontend.lock_in_center(data.lock_in_center > 0);
                 nk_group_end(ctx);
             }
         }

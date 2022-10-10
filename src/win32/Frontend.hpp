@@ -23,6 +23,7 @@ struct Frontend : public FrontendData {
     Stick joystick_ = Stick::Right;
     bool hide_cursor_ = false;
     bool lock_cursor_ = false;
+    bool lock_in_center_ = false;
     std::string process_name_ = "";
     static constexpr unsigned short button_map[] = {0,
                                                     XINPUT_GAMEPAD_A,
@@ -59,6 +60,7 @@ struct Frontend : public FrontendData {
     Stick joystick() const override { return joystick_; }
     bool hide_cursor() const override { return hide_cursor_; }
     bool lock_cursor() const override { return lock_cursor_; }
+    bool lock_in_center() const override { return lock_in_center_; }
     std::string process_name() const override { return process_name_; }
     void input_delay(unsigned value) override { input_delay_ = value; }
     void x_resist(unsigned value) override { x_resist_ = value; }
@@ -74,6 +76,10 @@ struct Frontend : public FrontendData {
     void lock_cursor(bool value) override {
         lock_cursor_ = value;
         backend.LockCursor(value);
+    }
+    void lock_in_center(bool value) override {
+        lock_in_center_ = value;
+        backend.LockInCenter(value);
     }
     void process_name(std::string value) override {
         process_name_ = std::move(value);

@@ -71,6 +71,7 @@ struct FrontendData {
     virtual Stick joystick() const = 0;
     virtual bool hide_cursor() const = 0;
     virtual bool lock_cursor() const = 0;
+    virtual bool lock_in_center() const = 0;
     virtual std::string process_name() const = 0;
     virtual void input_delay(unsigned value) = 0;
     virtual void x_resist(unsigned value) = 0;
@@ -81,6 +82,7 @@ struct FrontendData {
     virtual void joystick(Stick value) = 0;
     virtual void hide_cursor(bool value) = 0;
     virtual void lock_cursor(bool value) = 0;
+    virtual void lock_in_center(bool value) = 0;
     virtual void process_name(std::string value) = 0;
     virtual ~FrontendData() {}
 };

@@ -87,11 +87,10 @@ LRESULT CALLBACK Backend::MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
     deltasum.y += delta.y;
     prev.y = param->pt.y;
     if (this->Locked()) {
-        int x = window_rect.left + ((window_rect.right - window_rect.left) / 2);
-        int y = window_rect.top + ((window_rect.bottom - window_rect.top) / 2);
+        int x = -(delta.x - param->pt.x);
+        int y = -(delta.y - param->pt.y);
         prev.x = x;
         prev.y = y;
-        SetCursorPos(x, y);
         return 1;
     }
 backend_mouseproc_end:
@@ -122,8 +121,16 @@ void Backend::EventSystemForeground(HWINEVENTHOOK hWinEventHook, DWORD event, HW
             GetWindowRect(hwnd, &window_rect);
             getMessageHook = SetWindowsHookEx(WH_GETMESSAGE, GetMsgProc, dll, dwThreadId);
         }
+        if (this->Locked() && lock_in_center) {
+            int x = window_rect.left + ((window_rect.right - window_rect.left) / 2);
+            int y = window_rect.top + ((window_rect.bottom - window_rect.top) / 2);
+            prev.x = x;
+            prev.y = y;
+            SetCursorPos(x, y);
+        }
         break;
     }
+    default: { break; }
     }
 }
 
@@ -134,6 +141,8 @@ bool Backend::GetWindowActive() { return window_active; }
 bool Backend::Locked() { return window_active && lock_cursor; }
 
 void Backend::LockCursor(bool value) { lock_cursor = value; }
+
+void Backend::LockInCenter(bool value) { lock_in_center = value; }
 
 extern "C" {
 

@@ -28,10 +28,10 @@ struct M2JWIN32DLL_API Backend : public BackendData {
     std::string targetProcName{""};
     bool window_active = false;
     bool lock_cursor = false;
+    bool lock_in_center = false;
     HHOOK getMessageHook = NULL;
     DWORD dwThreadId;
     HINSTANCE dll;
-
   public:
     RECT window_rect{0, 0, 0, 0};
     Backend(HINSTANCE dll_) : dll{dll_} {}
@@ -41,6 +41,7 @@ struct M2JWIN32DLL_API Backend : public BackendData {
         }
     }
     void LockCursor(bool value);
+    void LockInCenter(bool value);
     bool Locked();
     bool GetWindowActive();
     void SetTargetProcName(std::string name);
