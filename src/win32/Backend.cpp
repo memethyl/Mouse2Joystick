@@ -68,11 +68,11 @@ LRESULT CALLBACK Backend::MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
         goto backend_mouseproc_end;
     }
     case WM_XBUTTONDOWN: {
-        (((wParam >> 16) == 0x0001) ? mouse_4 : mouse_5) = true;
+        (((param->mouseData >> 16) == 0x0001) ? mouse_4 : mouse_5) = true;
         goto backend_mouseproc_end;
     }
     case WM_XBUTTONUP: {
-        (((wParam >> 16) == 0x0001) ? mouse_4 : mouse_5) = false;
+        (((param->mouseData >> 16) == 0x0001) ? mouse_4 : mouse_5) = false;
         goto backend_mouseproc_end;
     }
     default: {
